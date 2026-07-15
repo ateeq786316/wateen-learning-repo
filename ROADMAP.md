@@ -4,6 +4,24 @@
 
 ---
 
+## Today's Update — Jul 15, 2026
+
+**Topics Covered:**
+- Project init & Express server setup
+- Middleware stack (helmet, cors, morgan, json parser, error handler)
+- MVC folder structure (routes, controllers, services, middleware, config)
+- File upload with multer (disk storage, UUID rename, type/size filter)
+- REST endpoints (POST upload, GET list files)
+- Config centralization
+- API testing via Postman
+
+**Blockers Encountered:**
+- `app.use(express())` was invalid — should be `express.json()`
+- `app.js` was empty causing `require('./app')` to fail
+- Swagger was added then removed on request
+
+---
+
 ## 1. Core Node.js Runtime
 
 **Coding Task:** Build a CLI tool that reads a large CSV file using streams, processes it in chunks, and writes output to a new file.
