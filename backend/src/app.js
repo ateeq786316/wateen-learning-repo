@@ -3,6 +3,7 @@ const cors = require('cors');
 const helmet = require('helmet');
 const morgan = require('morgan');
 const importRoutes = require('./routes/importRoutes');
+const userRoutes = require('./routes/userRoutes');
 
 const app = express();
 
@@ -14,10 +15,13 @@ app.use(express.json());
 app.get('/', (req, res) => res.json({ status: 'running' }));
 
 app.use('/api/imports', importRoutes);
+app.use('/api/users', userRoutes);
 
 app.use((err, req, res, next) => {
   console.error(err);
-  res.status(err.status || 500).json({ error: err.message || 'Internal error' });
+  const status = err.statusCode || err.status || 500;
+  const message = err.statusCode ? err.message : 'Internal error';
+  res.status(status).json({ error: message });
 });
 
 module.exports = app;
