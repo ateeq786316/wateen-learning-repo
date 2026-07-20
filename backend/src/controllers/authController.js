@@ -108,9 +108,16 @@ const AuthController = {
 
   googleCallback: (req, res, next) => {
     passport.authenticate('google', { session: false }, (err, result) => {
-      if (err) return next(err);
-      if (!result) return res.status(401).json({ success: false, message: 'Google authentication failed' });
-      res.json({ success: true, ...result });
+      if (err) {
+        const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
+        return res.redirect(`${frontendUrl}/login?error=${encodeURIComponent(err.message)}`);
+      }
+      if (!result) {
+        const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
+        return res.redirect(`${frontendUrl}/login?error=Google+auth+failed`);
+      }
+      const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
+      res.redirect(`${frontendUrl}/oauth/callback?accessToken=${result.accessToken}&refreshToken=${result.refreshToken}`);
     })(req, res, next);
   },
 
@@ -118,9 +125,16 @@ const AuthController = {
 
   githubCallback: (req, res, next) => {
     passport.authenticate('github', { session: false }, (err, result) => {
-      if (err) return next(err);
-      if (!result) return res.status(401).json({ success: false, message: 'GitHub authentication failed' });
-      res.json({ success: true, ...result });
+      if (err) {
+        const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
+        return res.redirect(`${frontendUrl}/login?error=${encodeURIComponent(err.message)}`);
+      }
+      if (!result) {
+        const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
+        return res.redirect(`${frontendUrl}/login?error=GitHub+auth+failed`);
+      }
+      const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
+      res.redirect(`${frontendUrl}/oauth/callback?accessToken=${result.accessToken}&refreshToken=${result.refreshToken}`);
     })(req, res, next);
   },
 
