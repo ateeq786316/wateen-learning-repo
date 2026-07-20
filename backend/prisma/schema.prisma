@@ -7,11 +7,33 @@ datasource db {
   provider = "postgresql"
 }
 
+enum AuthProvider {
+  LOCAL
+  GOOGLE
+  GITHUB
+}
+
+enum UserRole {
+  USER
+  ADMIN
+}
+
 model User {
   id        Int      @id @default(autoincrement())
   name      String
   email     String   @unique
+  password  String?
   age       Int?
+  role      UserRole      @default(USER)
+  provider  AuthProvider  @default(LOCAL)
+  providerId String?
+  avatar    String?
+  emailVerified           Boolean   @default(false)
+  emailVerificationToken  String?
+  emailVerificationExpires DateTime?
+  refreshToken            String?
+  resetPasswordToken      String?
+  resetPasswordExpires    DateTime?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
